@@ -5,9 +5,12 @@ The gcs-backup creates a cronjob which runs on a selected schedule.  It also inc
 
 ## Requirements
 A service account with access to the selected GCS bucket, and access to the Kubernetes API from within the cluster is required. The GCS bucket needs to be created as well.  `gsutil mb gs://[BUCKET_NAME]/`
+Images must be available in the GCR for the specific project as well.  They are required and listed in the values.yaml for each environment.
+
 
 ## Restore
 The restore job is generally the reverse.  It creates a control pod that cycles down the follower, then uses another job to mount to the volume with the database.  It then pulls the file down from the given bucket using GCS Fuse, uncompresses it in the FactomD database location.  Then, once that's complete, it scales the follower back up to continue.
 
 
 ## TODO:
+* Possible change of host for images

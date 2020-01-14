@@ -4,3 +4,4 @@ metadata:
   name: gcs-config
 data:
   gcs-bucket: {{ .Values.gcs-bucket }}
+  backup-image: {{ .Values.backup-image }}

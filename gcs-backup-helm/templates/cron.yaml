@@ -27,6 +27,11 @@ spec:
                     configMapKeyRef:
                       name: gcs-config
                       key: gcs-bucket
+                - name: BACKUP_IMAGE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: gcs-config
+                      key: backup-image
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: "/service/service.json"
           volumes:
