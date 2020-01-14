@@ -21,7 +21,7 @@ spec:
     spec:      
       containers:
         - name: factomd-follower
-          image: {{ .Values.follower-image }}
+          image: {{ .Values.follower_image }} 
           command: ["sh", "-c"]
           args: ["/go/bin/factomd \
                   --loglvl='error' \
@@ -36,6 +36,9 @@ spec:
           volumeMounts:
            - name: backup-volume
              mountPath: /root/.factom/m2
+           - name: config
+             mountPath: "/root/.factom/m2/factomd.conf"
+             subPath: "factomd.conf"
           ports:
            - containerPort: 8090
              name: control-panel
@@ -49,6 +52,11 @@ spec:
            - containerPort: 9876
              name: prometheus
              protocol: TCP
+      volumes:
+      - name: config
+        secret:
+          secretName: b-follower-config
+          key: factomd.conf
   volumeClaimTemplates:
     - metadata:
         name: backup-volume

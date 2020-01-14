@@ -12,10 +12,11 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-gcs-bucket: factomd_backup
+gcs_bucket: factomd-backup
 
-control-image: gcr.io/connect-dev-223719/gcs-control
-follower-image: factominc/factomd:v6.5.0-alpine
+control_image: gcr.io/connect-dev-223719/gcs-control
+follower_image: "factominc/factomd:v6.5.0-alpine"
+backup_image: gcr.io/connect-dev-223719/gcs-backup
 service:
   type: ClusterIP
   port: 80
