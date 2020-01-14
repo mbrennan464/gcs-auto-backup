@@ -21,7 +21,7 @@ spec:
     spec:      
       containers:
         - name: factomd-follower
-          image: factominc/factomd:v6.5.0-alpine
+          image: {{ .Values.follower-image }}
           command: ["sh", "-c"]
           args: ["/go/bin/factomd \
                   --loglvl='error' \
