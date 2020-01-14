@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gcs-backup-control
+  namespace: fctd
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - name: gcs-control
+              image: {{ .Values.control-image }}
+              volumeMounts:
+              - name: service
+                mountPath: "/service"
+                readOnly: true
+              env:
+                - name: GCS_BUCKET
+                  valueFrom:
+                    configMapKeyRef:
+                      name: gcs-config
+                      key: gcs-bucket
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: "/service/service.json"
+          volumes:
+          - name: service
+            secret:
+              secretName: service-account
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: 0 5 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false
+

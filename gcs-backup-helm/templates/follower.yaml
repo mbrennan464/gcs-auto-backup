@@ -1,0 +1,61 @@
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: factomd-backup-follower
+spec:
+  serviceName: "factomd-backup"
+  replicas: 1
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      app: factomd
+      role: member
+  template:
+    metadata:
+      labels:
+        app: factomd
+        role: member
+    spec:      
+      containers:
+        - name: factomd-follower
+          image: factominc/factomd:v6.5.0-alpine
+          command: ["sh", "-c"]
+          args: ["/go/bin/factomd \
+                  --loglvl='error' \
+                  --sim_stdin=false \
+                  --debuglog='network|process|dbsig|invalid|faulting|badmsgs' \
+                  --debugconsole=remotehost \
+                  --customnet=devnet \
+                  --network=CUSTOM \
+                  --stdoutlog out.txt \
+                  --stderrlog out.txt \
+                  --blktime=600"]
+          volumeMounts:
+           - name: backup-volume
+             mountPath: /root/.factom/m2
+          ports:
+           - containerPort: 8090
+             name: control-panel
+           - containerPort: 8093
+             name: sim-control
+           - containerPort: 8088
+             name: factomd
+           - containerPort: 8108
+             name: explorer
+             protocol: TCP
+           - containerPort: 9876
+             name: prometheus
+             protocol: TCP
+  volumeClaimTemplates:
+    - metadata:
+        name: backup-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10G
+
