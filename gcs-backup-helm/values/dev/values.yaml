@@ -15,8 +15,12 @@ fullnameOverride: ""
 gcs_bucket: factomd-backup
 
 control_image: gcr.io/connect-dev-223719/gcs-control
-follower_image: "factominc/factomd:v6.5.0-alpine"
+follower_image: factominc/factomd:v6.5.0-alpine
 backup_image: gcr.io/connect-dev-223719/gcs-backup
+label_for_follower: leader
+volume_name: backup-volume
+follower_name: factomd-backup-follower
+
 service:
   type: ClusterIP
   port: 80

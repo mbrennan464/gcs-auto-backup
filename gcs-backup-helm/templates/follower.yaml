@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: factomd-backup-follower
+  name: {{ .Values.follower_name }}
 spec:
   serviceName: "factomd-backup"
   replicas: 1
@@ -12,12 +12,12 @@ spec:
   selector:
     matchLabels:
       app: factomd
-      role: member
+      role: {{ .Values.label_for_follower }}
   template:
     metadata:
       labels:
         app: factomd
-        role: member
+        role: {{ .Values.label_for_follower }}
     spec:      
       containers:
         - name: factomd-follower
@@ -34,7 +34,7 @@ spec:
                   --stderrlog out.txt \
                   --blktime=600"]
           volumeMounts:
-           - name: backup-volume
+           - name: {{ .Values.volume_name }}
              mountPath: /root/.factom/m2
            - name: config
              mountPath: "/root/.factom/m2/factomd.conf"
@@ -59,7 +59,7 @@ spec:
           key: factomd.conf
   volumeClaimTemplates:
     - metadata:
-        name: backup-volume
+        name: {{ .Values.volume_name }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: "standard"

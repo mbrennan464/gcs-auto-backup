@@ -32,6 +32,8 @@ spec:
                     configMapKeyRef:
                       name: gcs-config
                       key: backup-image
+                - name: CLAIM_NAME
+                  value: '{{ .Values.volume_name }}-{{ .Values.follower_name }}'
                 - name: PYTHONUNBUFFERED
                   value: "1"
                 - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -45,7 +47,7 @@ spec:
           schedulerName: default-scheduler
           securityContext: {}
           terminationGracePeriodSeconds: 30
-  schedule: 0 12  * *
+  schedule: 0 * * * *
   successfulJobsHistoryLimit: 3
   suspend: false
 
