@@ -14,6 +14,7 @@ fullnameOverride: ""
 
 gcs_bucket: factomd-backup
 
+
 control_image: gcr.io/connect-dev-223719/gcs-control
 follower_image: factominc/factomd:v6.5.0-alpine
 backup_image: gcr.io/connect-dev-223719/gcs-backup

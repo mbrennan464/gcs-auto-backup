@@ -2,7 +2,6 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: gcs-backup-control
-  namespace: fctd
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 1
@@ -33,7 +32,7 @@ spec:
                       name: gcs-config
                       key: backup-image
                 - name: CLAIM_NAME
-                  value: '{{ .Values.volume_name }}-{{ .Values.follower_name }}'
+                  value: '{{ .Values.volume_name }}-{{ .Values.follower_name }}-0'
                 - name: PYTHONUNBUFFERED
                   value: "1"
                 - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -47,7 +46,7 @@ spec:
           schedulerName: default-scheduler
           securityContext: {}
           terminationGracePeriodSeconds: 30
-  schedule: 0 * * * *
+  schedule: 0 22 * * *
   successfulJobsHistoryLimit: 3
   suspend: false
 
