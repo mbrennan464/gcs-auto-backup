@@ -18,3 +18,5 @@ Restore is not available by job or chart yet - in progress
 
 ## TODO:
 * Possible change of host for images
+* Change some of the naming for sandboxes
+* Adjust the label for follower: component/role?
